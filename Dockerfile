@@ -6,6 +6,7 @@ FROM node:21-alpine As development
 RUN npm install -g pnpm
 WORKDIR /app
 COPY  package*.json ./
+COPY  pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY  . .
 
