@@ -5,13 +5,13 @@
 FROM node:21-alpine As development
 # RUN npm install -g pnpm
 # RUN pnpm config set registry http://registry.npmjs.org
-RUN npm config set registry http://registry.npmjs.org
+# RUN npm config set registry http://registry.npmjs.org
 # RUN npm config set timeout 6000000
 WORKDIR /app
 COPY  package*.json ./
 COPY  pnpm-lock.yaml ./
 # RUN pnpm install --frozen-lockfile
-RUN npm install --verbose
+RUN yarn --ddd
 COPY  . .
 
 ###################
