@@ -5,7 +5,7 @@
 FROM node:21-alpine As development
 WORKDIR /app
 COPY  package*.json ./
-RUN npm i --verbose
+RUN npm ci --verbose
 COPY  . .
 
 ###################
