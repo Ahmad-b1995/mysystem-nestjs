@@ -19,7 +19,7 @@ export class TagsService {
   }
 
   findOne(id: string): Promise<Tags> {
-    return this.TagsRepo.findOne(id);
+    return this.TagsRepo.findOne({ where: { id: +id } });
   }
 
   create(createTagDto: CreateTag): Promise<Tags> {

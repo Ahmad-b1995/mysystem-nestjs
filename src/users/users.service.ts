@@ -12,17 +12,19 @@ export class UsersService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
   ) {}
-  
+
   async findAll(): Promise<User[]> {
-    return this.usersRepository.find({ select: ["username", "nickName", "email", "desc", "avatar", "isActive"] });
+    return this.usersRepository.find({
+      select: ['username', 'nickName', 'email', 'desc', 'avatar', 'isActive'],
+    });
   }
 
   findOne(id: string): Promise<User> {
-    return this.usersRepository.findOne(id);
+    return this.usersRepository.findOne({ where: { id: +id } });
   }
-  
+
   findOneByUsername(username: string): Promise<User> {
-    return this.usersRepository.findOne({ username });
+    return this.usersRepository.findOne({ where: { username } });
   }
 
   create(createUserDto: CreateUserDto): Promise<User> {
@@ -37,10 +39,14 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const { username, nickName, email, desc, avatar } = updateUserDto
+    const { username, nickName, email, desc, avatar } = updateUserDto;
     const user = await this.usersRepository.findOne(id);
     this.usersRepository.merge(user, {
-      username, nickName, email, desc, avatar
+      username,
+      nickName,
+      email,
+      desc,
+      avatar,
     });
     console.log('user is: ', user);
     return this.usersRepository.save(user);
@@ -52,7 +58,12 @@ export class UsersService {
 
   async login(loginDto: LoginDto): Promise<User> {
     console.log('loginDto is: ', loginDto);
-    const { username, password } = loginDto
-    return this.usersRepository.findOne({ username, password });
+    const { username, password } = loginDto;
+    return this.usersRepository.findOne({
+      where: {
+        username: username,
+        password: password,
+      },
+    });
   }
 }
