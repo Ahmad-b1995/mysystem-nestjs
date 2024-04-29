@@ -5,7 +5,7 @@
 FROM node:21-alpine As development
 WORKDIR /app
 COPY  package*.json ./
-RUN npm ci --verbose
+RUN pnpm install --frozen-lockfile
 COPY  . .
 
 ###################
