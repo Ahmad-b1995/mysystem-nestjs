@@ -5,6 +5,7 @@
 FROM node:21-alpine As development
 RUN npm install -g pnpm
 RUN pnpm config set registry http://registry.npmjs.org
+RUN pnpm config set timeout 6000000
 WORKDIR /app
 COPY  package*.json ./
 COPY  pnpm-lock.yaml ./
