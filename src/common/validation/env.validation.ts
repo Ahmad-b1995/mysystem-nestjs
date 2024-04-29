@@ -16,7 +16,7 @@ class EnvironmentVariables {
 
   @IsNumber()
   @IsNotEmpty()
-  PORT: number;
+  APP_PORT: number;
 
   @IsString()
   @IsNotEmpty()
