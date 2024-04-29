@@ -23,17 +23,22 @@ services:
     container_name: dextrading-mysql
     image: mysql:8.0
     env_file: .env
-    ports:
-      - 3307:3306
-    networks:
-      - dextrading-intranet
     volumes:
       - mysql:/var/lib/mysql
+    ports:
+      - 3308:${DB_PORT}
+    networks:
+      - dextrading-intranet
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      TZ: 'utc'
+    command: --default-authentication-plugin=mysql_native_password
     healthcheck:
-      test: "cat /proc/net/tcp /proc/net/tcp6 | grep ':0CEB'"
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      test: ['CMD', 'mysqladmin', '-u${DB_USER}', '-p${DB_PASSWORD}', 'ping']
+      interval: 5s
+      retries: 10
+      timeout: 15s
 
 volumes:
   mysql:
