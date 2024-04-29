@@ -5,8 +5,7 @@ import { PostEntity } from './posts.entity';
 
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-
-const _ = require('lodash');
+import _ from 'lodash';
 
 @Injectable()
 export class PostService {
@@ -86,7 +85,7 @@ export class PostService {
 
   async update(id: string, updatePostDto: UpdatePostDto): Promise<PostEntity> {
     const updateAt = Date.now();
-    const post = await this.PostsRepo.findOne(id);
+    const post = await this.PostsRepo.findOne({ where: { id: +id } });
     const { title, content, isPublic, categories, tags, summary, slug, img } =
       updatePostDto;
 
