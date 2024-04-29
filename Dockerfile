@@ -4,6 +4,7 @@
 
 FROM node:21-alpine As development
 RUN npm install -g pnpm
+RUN pnpm config set registry http://registry.npmjs.org
 WORKDIR /app
 COPY  package*.json ./
 COPY  pnpm-lock.yaml ./
