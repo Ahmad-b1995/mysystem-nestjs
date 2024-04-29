@@ -1,0 +1,44 @@
+services:
+  dextrading-api:
+    container_name: dextrading-api
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    networks:
+      - dextrading-intranet
+    env_file:
+      - .env # Available inside container not in compose file
+    environment:
+      - DB_HOST=DB_HOST
+    depends_on:
+      dextrading-mysql:
+        condition: service_healthy
+
+  dextrading-mysql:
+    container_name: dextrading-mysql
+    image: mysql:8.0
+    env_file: .env
+    ports:
+      - 3307:3306
+    networks:
+      - dextrading-intranet
+    volumes:
+      - mysql:/var/lib/mysql
+    healthcheck:
+      test: "cat /proc/net/tcp /proc/net/tcp6 | grep ':0CEB'"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql:
+    name: dextrading-mysql
+
+networks:
+  dextrading-intranet:
+    name: dextrading-intranet
+    driver: bridge
