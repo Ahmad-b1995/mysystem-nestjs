@@ -17,6 +17,7 @@ services:
     depends_on:
       dextrading-mysql:
         condition: service_healthy
+    command: node dist/main.js
 
   dextrading-mysql:
     container_name: dextrading-mysql
