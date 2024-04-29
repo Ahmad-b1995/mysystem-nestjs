@@ -13,7 +13,7 @@ services:
     env_file:
       - .env # Available inside container not in compose file
     environment:
-      - DB_HOST=DB_HOST
+      - DB_HOST=dextrading-mysql
     depends_on:
       dextrading-mysql:
         condition: service_healthy
