@@ -14,7 +14,6 @@ async function bootstrap() {
   setupSwagger(app);
   app.enableCors();
   app.useGlobalInterceptors(new TransformInterceptor());
-
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

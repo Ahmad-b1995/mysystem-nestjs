@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class PostsQuery {
   @ApiProperty({
@@ -7,7 +8,11 @@ export class PostsQuery {
     default: 10,
     required: false,
   })
-  pageSize: number;
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(100)
+  pageSize?: number;
 
   @ApiProperty({
     description: 'Current page number',
@@ -15,7 +20,10 @@ export class PostsQuery {
     default: 1,
     required: false,
   })
-  pageNo: number;
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  pageNo?: number;
 
   @ApiProperty({
     description: 'Sorting field',
@@ -23,7 +31,9 @@ export class PostsQuery {
     default: 'createAt',
     required: false,
   })
-  sortField: string;
+  @IsOptional()
+  @IsString()
+  sortField?: string;
 
   @ApiProperty({
     description: 'Sort order',
@@ -31,5 +41,7 @@ export class PostsQuery {
     default: 'descend',
     required: false,
   })
-  sortOrder: string;
+  @IsOptional()
+  @IsString()
+  sortOrder?: string;
 }

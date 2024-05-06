@@ -12,8 +12,8 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { PostsQuery } from './dto/posts-query.dto';
 import { PostService } from './posts.service';
+import { PostsQuery } from './dto/posts-query.dto';
 
 @Controller('api/posts')
 @ApiTags('Blog')
@@ -21,7 +21,7 @@ export class PostsController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List of blogs' })
+  @ApiOperation({ summary: 'List of posts' })
   async findAll(@Query() query: PostsQuery) {
     const { pageSize = 10, pageNo = 1 } = query;
     const page = {
