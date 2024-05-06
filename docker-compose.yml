@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   dextrading-api:
     container_name: dextrading-api
@@ -7,11 +9,11 @@ services:
       dockerfile: Dockerfile
       target: production
     ports:
-      - ${APP_PORT}:${APP_PORT}
+      - '${APP_PORT}:${APP_PORT}'
     networks:
       - dextrading-intranet
     env_file:
-      - .env # Available inside container not in compose file
+      - .env
     environment:
       - DB_HOST=dextrading-mysql
     depends_on:
@@ -21,12 +23,12 @@ services:
 
   dextrading-mysql:
     container_name: dextrading-mysql
-    image: mysql:8.0
+    restart: always
+    image: mysql:8.0.29
     env_file: .env
     volumes:
       - mysql:/var/lib/mysql
-    ports:
-      - 3307:${DB_PORT}
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - dextrading-intranet
     environment:
@@ -36,9 +38,10 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     healthcheck:
       test: ['CMD', 'mysqladmin', '-u${DB_USER}', '-p${DB_PASSWORD}', 'ping']
-      interval: 5s
-      retries: 10
-      timeout: 15s
+      interval: 10s
+      retries: 5
+      timeout: 10s
+      start_period: 15s
 
 volumes:
   mysql:
