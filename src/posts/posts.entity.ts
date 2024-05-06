@@ -34,10 +34,10 @@ export class PostEntity {
 
   @Column({ type: 'bigint', width: 25, default: null })
   createAt: number;
-  
+
   @Column({ type: 'bigint', width: 25, default: null })
   updateAt: number;
-  
+
   @Column({ default: false })
   isPublic: boolean;
 

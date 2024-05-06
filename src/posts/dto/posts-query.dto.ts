@@ -1,35 +1,35 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class PostsQuery {
   @ApiProperty({
-    description: '每页条数',
-    // example: 10,
+    description: 'Number of items per page',
+    example: 10,
     default: 10,
-    required: false
+    required: false,
   })
-  pageSize: number
-  
-  @ApiProperty({
-    description: '当前页码',
-    // example: 1,
-    default: 1,
-    required: false
-  })
-  pageNo: number
+  pageSize: number;
 
   @ApiProperty({
-    description: '排序字段',
+    description: 'Current page number',
+    example: 1,
+    default: 1,
+    required: false,
+  })
+  pageNo: number;
+
+  @ApiProperty({
+    description: 'Sorting field',
     example: 'createAt',
     default: 'createAt',
-    required: false
+    required: false,
   })
-  sortField: string
-  
+  sortField: string;
+
   @ApiProperty({
-    description: '排序方式',
+    description: 'Sort order',
     example: 'descend',
     default: 'descend',
-    required: false
+    required: false,
   })
-  sortOrder: string
+  sortOrder: string;
 }

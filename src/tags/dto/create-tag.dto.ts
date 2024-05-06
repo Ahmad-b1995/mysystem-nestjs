@@ -2,17 +2,17 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 export class CreateTag {
-  @ApiProperty({ description: '标签名称', example: 'javascript' })
-  @IsNotEmpty({ message: '请填写标签名称' })
+  @ApiProperty({ description: 'Tag name', example: 'javascript' })
+  @IsNotEmpty({ message: 'Please fill in the tag name' })
   name: string;
 
-  @ApiProperty({ description: '别名，在 url 中使用', example: 'taga' })
-  @IsNotEmpty({ message: '请填写标签别名' })
+  @ApiProperty({ description: 'Alias, used in URL', example: 'taga' })
+  @IsNotEmpty({ message: 'Please fill in the tag alias' })
   alias: string;
 
-  @ApiProperty({ description: '图像' })
+  @ApiProperty({ description: 'Image' })
   img: string;
 
-  @ApiProperty({ description: '描述', example: '一个标本语言' })
+  @ApiProperty({ description: 'Description', example: 'A prototype language' })
   desc: string;
 }

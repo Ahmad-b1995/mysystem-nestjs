@@ -1,14 +1,18 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateUserDto {
-  @ApiProperty({ description: '用户名', example: 'wencai' })
+  @ApiProperty({ description: 'Username', example: 'Tom' })
   username: string;
-  @ApiProperty({ description: '真实姓名', example: 'zhang'})
+
+  @ApiProperty({ description: 'Real name', example: 'David' })
   nickName: string;
-  @ApiProperty({ description: '电子邮件', example: 'zhang'})
+
+  @ApiProperty({ description: 'Email', example: 'David' })
   email: string;
-  @ApiProperty({ description: '个人说明', example: 'zhang'})
+
+  @ApiProperty({ description: 'Personal description', example: 'David' })
   desc: string;
-  @ApiProperty({ description: '头像', example: 'zhang'})
+
+  @ApiProperty({ description: 'Avatar', example: 'David' })
   avatar: string;
 }
