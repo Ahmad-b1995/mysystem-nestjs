@@ -14,7 +14,7 @@ COPY . .
 
 FROM node:21-alpine As build
 WORKDIR /app
-COPY --chown=node:node package.json yarn.lock ./
+COPY --chown=node:node package.json pnpm-lock.yaml ./
 COPY --chown=node:node --from=development /app/node_modules ./node_modules
 COPY --chown=node:node . .
 RUN yarn run build
