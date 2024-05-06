@@ -4,7 +4,7 @@
 
 FROM node:21-alpine As development
 WORKDIR /app
-COPY package.json yarn.lock ./
+COPY package.json pnpm-lock.yaml ./
 RUN yarn install --frozen-lockfile --network-timeout 1000000 -ddd
 COPY . .
 
