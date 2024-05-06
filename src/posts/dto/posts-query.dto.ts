@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsNumber,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
 
 export class PostsQuery {
   @ApiProperty({
@@ -9,9 +16,10 @@ export class PostsQuery {
     required: false,
   })
   @IsOptional()
-  @IsInt()
+  @IsNumber()
   @Min(1)
   @Max(100)
+  @Type(() => Number)
   pageSize?: number;
 
   @ApiProperty({
@@ -21,8 +29,9 @@ export class PostsQuery {
     required: false,
   })
   @IsOptional()
-  @IsInt()
+  @IsNumber()
   @Min(1)
+  @Type(() => Number)
   pageNo?: number;
 
   @ApiProperty({
