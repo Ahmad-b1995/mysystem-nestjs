@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   dextrading-api:
     container_name: dextrading-api
@@ -29,6 +27,8 @@ services:
     volumes:
       - mysql:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3307:${DB_PORT}
     networks:
       - dextrading-intranet
     environment:
