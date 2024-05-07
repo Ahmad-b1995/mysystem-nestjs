@@ -33,7 +33,7 @@ export class CategoryController {
   })
   async getAll() {
     try {
-      const categories = await this.categoryService.findAll();
+      const categories = await this.categoryService.findAll({});
       return categories;
     } catch (error) {
       throw new HttpException(

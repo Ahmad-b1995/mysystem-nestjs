@@ -20,11 +20,15 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('api/auth')
 @ApiTags('Authentication')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post('register')
   @ApiOperation({ summary: 'Register User' })
@@ -33,7 +37,7 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Bad request.' })
   async register(@Body() dto: RegisterDto) {
     try {
-      const user = await this.authService.register(dto);
+      const user = await this.usersService.create(dto);
       return { message: 'User registered successfully', user };
     } catch (error) {
       throw new HttpException(
