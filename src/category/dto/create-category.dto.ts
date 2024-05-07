@@ -1,18 +1,35 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateCategory {
-  @ApiProperty({ description: '分类名称', example: 'web' })
-  @IsNotEmpty({ message: '请填写分类名称' })
-  name: string
-  
-  @ApiProperty({ description: '别名，在 url 中使用', example: 'web' })
-  @IsNotEmpty({ message: '请填写分类别名' })
-  alias: string
+  @ApiProperty({
+    description: 'Name of the category',
+    example: 'web',
+    required: true,
+  })
+  @IsNotEmpty({ message: 'Category name is required' })
+  name: string;
 
-  @ApiProperty({ description: '图像' })
-  img: string
-  
-  @ApiProperty({ description: '描述', example: 'Web 前端开发' })
-  desc: string
+  @ApiProperty({
+    description: 'Alias used in URL',
+    example: 'web',
+    required: true,
+  })
+  @IsNotEmpty({ message: 'Alias is required' })
+  alias: string;
+
+  @ApiProperty({
+    description: 'Image for the category',
+    required: false,
+  })
+  @IsOptional()
+  img: string;
+
+  @ApiProperty({
+    description: 'Description of the category',
+    example: 'Web development',
+    required: false,
+  })
+  @IsOptional()
+  desc: string;
 }
