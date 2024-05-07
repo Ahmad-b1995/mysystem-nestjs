@@ -39,7 +39,7 @@ export class MediaController {
     description: 'The file has been successfully uploaded.',
   })
   @ApiResponse({ status: 400, description: 'Bad request.' })
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+  async uploadFile(@UploadedFile() file) {
     if (!file) {
       throw new HttpException('File is required', HttpStatus.BAD_REQUEST);
     }
