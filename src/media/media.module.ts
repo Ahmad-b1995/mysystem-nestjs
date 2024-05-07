@@ -5,8 +5,8 @@ import { MulterModule } from '@nestjs/platform-express';
 import { Media } from './media.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-const MAO = require('multer-aliyun-oss');
-const crypto = require('crypto');
+import * as MAO from 'multer-aliyun-oss';
+import * as crypto from 'crypto';
 
 @Module({
   imports: [

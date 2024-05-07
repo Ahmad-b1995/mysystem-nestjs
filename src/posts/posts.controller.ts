@@ -46,21 +46,21 @@ export class PostsController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create blog' })
+  @ApiOperation({ summary: 'Create post' })
   async create(@Body() createPostDto: CreatePostDto) {
     const data = await this.postService.create(createPostDto);
     return { data };
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Update blog' })
+  @ApiOperation({ summary: 'Update post' })
   async update(@Param('id') id: string, @Body() updatePostData: UpdatePostDto) {
     const data = await this.postService.update(id, updatePostData);
     return { data };
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete blog' })
+  @ApiOperation({ summary: 'Delete post' })
   async remove(@Param('id') id: string) {
     const data = await this.postService.remove(id);
     return { data };

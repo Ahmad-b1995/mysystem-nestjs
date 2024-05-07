@@ -1,43 +1,79 @@
-import { Controller, Get, Post, Body, Request, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
-import { LoginDto }     from "./dto/login.dto";
-import { RegisterDto }  from "./dto/register.dto";
-import { AuthGuard }    from '@nestjs/passport';
-import { AuthService } from "./auth.service";
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Request,
+  UseGuards,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiHeader,
+  ApiResponse,
+  ApiBody,
+} from '@nestjs/swagger';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from './auth.service';
 
 @Controller('api/auth')
-@ApiTags('认证')
+@ApiTags('Authentication')
 export class AuthController {
-
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  @ApiOperation({ summary: '用户注册'})
-  async register (@Body() dto: RegisterDto) {
-    // const { username, password } = dto
-    // const data = await this.usersService.create(dto);
-    // return { data };
+  @ApiOperation({ summary: 'Register User' })
+  @ApiBody({ type: RegisterDto })
+  @ApiResponse({ status: 201, description: 'User registered successfully.' })
+  @ApiResponse({ status: 400, description: 'Bad request.' })
+  async register(@Body() dto: RegisterDto) {
+    try {
+      const user = await this.authService.register(dto);
+      return { message: 'User registered successfully', user };
+    } catch (error) {
+      throw new HttpException(
+        'Failed to register user',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  @ApiOperation({ summary: '用户登录'})
-  async login (@Body() dto: LoginDto, @Request() req) {
-    return this.authService.login(req.user)
+  @ApiOperation({ summary: 'User Login' })
+  @ApiBody({ type: LoginDto })
+  @ApiResponse({ status: 200, description: 'User logged in successfully.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  async login(@Body() dto: LoginDto, @Request() req) {
+    try {
+      const loginResult = await this.authService.login(req.user);
+      return loginResult;
+    } catch (error) {
+      throw new HttpException('Login failed', HttpStatus.UNAUTHORIZED);
+    }
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')
   @ApiHeader({
     name: 'Authorization',
-    description: 'Auth token'
+    description: 'Auth token required for accessing this endpoint',
   })
   @ApiBearerAuth()
-  @ApiOperation({ summary: '获取用户信息'})
+  @ApiOperation({ summary: 'Get User Profile' })
+  @ApiResponse({ status: 200, description: 'Profile retrieved successfully.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
   async getProfile(@Request() req) {
-    console.log('get profile: ', req.user);
-    const user = await this.authService.findOne(req.user.username)
-    return user;
+    try {
+      const user = await this.authService.findOne(req.user.username);
+      return user;
+    } catch (error) {
+      throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+    }
   }
 }
-

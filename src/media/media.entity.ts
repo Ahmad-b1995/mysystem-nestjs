@@ -10,13 +10,13 @@ export class Media {
 
   @Column()
   filename: string;
-  
+
   @Column()
   mimetype: string;
 
   @Column({ type: 'longtext' })
   url: string;
-  
+
   @Column({ default: 'aliyun' })
   oss: string;
 
