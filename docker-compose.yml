@@ -52,8 +52,8 @@ services:
     environment:
       MYSQL_HOST: dextrading-mysql
       MYSQL_USER: root
-      MYSQL_PASSWORD: [YOUR_PASSWORD]
-      MYSQL_DB: [DATABASE_NAME]
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DB: ${DB_NAME}
       SCHEDULE: '@daily'
       BACKUP_DIR: '/backups'
     volumes:
