@@ -19,7 +19,7 @@ export class MediaService {
   }
 
   async findOne(id: string): Promise<Media> {
-    return this.MediaRepo.findOne({ where: { id } });
+    return this.MediaRepo.findOne({ where: { id: +id } });
   }
 
   async create(file: Express.Multer.File): Promise<Media> {
@@ -44,7 +44,7 @@ export class MediaService {
   }
 
   async removeList(ids: string[]): Promise<void> {
-    const promises = ids.map(id => this.remove(id));
+    const promises = ids.map((id) => this.remove(id));
     await Promise.all(promises);
   }
 }

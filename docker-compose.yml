@@ -21,6 +21,11 @@ services:
       - type: bind
         source: ./uploads
         target: /app/uploads
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:${APP_PORT}']
+      interval: 30s
+      timeout: 10s
+      retries: 3
     command: node dist/main.js
 
   dextrading-mysql:
