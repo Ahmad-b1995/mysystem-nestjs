@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Media } from './media.entity';
+import { join } from 'path';
+import { promises as fsPromises } from 'fs';
 
 @Injectable()
 export class MediaService {
@@ -10,29 +12,39 @@ export class MediaService {
     private readonly MediaRepo: Repository<Media>,
   ) {}
 
-  async findAll(option: any): Promise<any> {
+  async findAll(): Promise<Media[]> {
     return this.MediaRepo.find({
-      order: { id: -1, date: -1 },
       where: { del: false },
     });
   }
 
-  findOne(id: string): Promise<Media> {
-    return this.MediaRepo.findOne({ where: { id: +id } });
+  async findOne(id: string): Promise<Media> {
+    return this.MediaRepo.findOne({ where: { id } });
   }
 
-  create(createMediaDto: Media): Promise<Media> {
-    const media = new Media();
-    const { originalname, filename, mimetype, url, oss, date } = createMediaDto;
-    Object.assign(media, { originalname, filename, mimetype, url, oss, date });
-    return this.MediaRepo.save(media);
+  async create(file: Express.Multer.File): Promise<Media> {
+    const media = this.MediaRepo.create({
+      originalname: file.originalname,
+      filename: file.filename,
+      mimetype: file.mimetype,
+      url: `/uploads/${file.filename}`, // Assuming files are served from /uploads
+      date: new Date(),
+    });
+    await this.MediaRepo.save(media);
+    return media;
   }
 
-  remove(id: string): Promise<any> {
-    return this.MediaRepo.update(id, { del: true });
+  async remove(id: string): Promise<void> {
+    const media = await this.findOne(id);
+    if (media) {
+      const fullPath = join(__dirname, '../../public/uploads', media.filename);
+      await fsPromises.unlink(fullPath); // Delete the file from the file system
+      await this.MediaRepo.remove(media);
+    }
   }
 
-  removeList(ids: string[]): Promise<any> {
-    return this.MediaRepo.update(ids, { del: true });
+  async removeList(ids: string[]): Promise<void> {
+    const promises = ids.map(id => this.remove(id));
+    await Promise.all(promises);
   }
 }

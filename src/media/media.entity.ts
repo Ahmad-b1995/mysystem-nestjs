@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Media {
@@ -15,14 +15,11 @@ export class Media {
   mimetype: string;
 
   @Column({ type: 'longtext' })
-  url: string;
-
-  @Column({ default: 'aliyun' })
-  oss: string;
+  url: string; // This should store the relative URL to access the file.
 
   @Column()
-  date: string;
+  date: Date;
 
   @Column({ default: false })
-  del: boolean;
+  del: boolean; // Keeps track of soft deletion status.
 }

@@ -3,7 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
-
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import appConfig from './common/config/app.config';
 import jwtConfig from './common/config/jwt.config';
 import databaseConfig from './common/config/database.config';
@@ -30,6 +31,9 @@ import { CategoryModule } from './category/category.module';
     MediaModule,
     TagsModule,
     CategoryModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../', 'uploads'),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

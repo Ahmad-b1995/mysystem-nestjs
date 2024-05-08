@@ -39,7 +39,7 @@ export class MediaController {
     description: 'The file has been successfully uploaded.',
   })
   @ApiResponse({ status: 400, description: 'Bad request.' })
-  async uploadFile(@UploadedFile() file) {
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
       throw new HttpException('File is required', HttpStatus.BAD_REQUEST);
     }
@@ -58,7 +58,7 @@ export class MediaController {
     description: 'File list retrieved successfully.',
   })
   async getList() {
-    const files = await this.mediaService.findAll({});
+    const files = await this.mediaService.findAll();
     return files;
   }
 
@@ -67,10 +67,7 @@ export class MediaController {
   @ApiResponse({ status: 200, description: 'File deleted successfully.' })
   @ApiResponse({ status: 404, description: 'File not found.' })
   async remove(@Param('id') id: string) {
-    const deleted = await this.mediaService.remove(id);
-    if (!deleted) {
-      throw new HttpException('File not found', HttpStatus.NOT_FOUND);
-    }
+    await this.mediaService.remove(id);
     return { message: 'File deleted successfully' };
   }
 
@@ -78,15 +75,7 @@ export class MediaController {
   @ApiOperation({ summary: 'Bulk delete files' })
   @ApiResponse({ status: 200, description: 'Files deleted successfully.' })
   async removeList(@Body() dto: FileDeleteDto) {
-    const { ids } = dto;
-    if (!ids || ids.length === 0) {
-      throw new HttpException(
-        'IDs are required for bulk delete',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
-    await this.mediaService.removeList(ids);
+    await this.mediaService.removeList(dto.ids);
     return { message: 'Files deleted successfully' };
   }
 }
