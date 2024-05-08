@@ -13,7 +13,7 @@ import { diskStorage } from 'multer';
     MulterModule.registerAsync({
       useFactory: () => ({
         storage: diskStorage({
-          destination: '../../uploads', // Define the folder where files should be stored
+          destination: '../../uploads',
           filename: (req, file, cb) => {
             crypto.pseudoRandomBytes(16, (err, raw) => {
               const date = new Date();

@@ -52,19 +52,19 @@ services:
       timeout: 10s
       start_period: 15s
 
-  mysql-backup:
-    image: databack/mysql-backup
-    environment:
-      MYSQL_HOST: dextrading-mysql
-      MYSQL_USER: root
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DB: ${DB_NAME}
-      SCHEDULE: '@daily'
-      BACKUP_DIR: '/backups'
-    volumes:
-      - ./backups:/backups
-    depends_on:
-      - dextrading-mysql
+  # mysql-backup:
+  #   image: databack/mysql-backup
+  #   environment:
+  #     MYSQL_HOST: dextrading-mysql
+  #     MYSQL_USER: root
+  #     MYSQL_PASSWORD: ${DB_PASSWORD}
+  #     MYSQL_DB: ${DB_NAME}
+  #     SCHEDULE: '@daily'
+  #     BACKUP_DIR: '/backups'
+  #   volumes:
+  #     - ./backups:/backups
+  #   depends_on:
+  #     - dextrading-mysql
 
 volumes:
   mysql:
