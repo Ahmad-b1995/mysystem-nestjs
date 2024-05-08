@@ -12,10 +12,10 @@ export class Tags {
   alias: string;
 
   @Column({ nullable: true })
-  img: string;
+  img?: string;
 
   @Column({ nullable: true })
-  desc: string;
+  desc?: string;
 
   @Column({ default: false })
   del: boolean;

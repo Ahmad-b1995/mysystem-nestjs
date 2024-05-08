@@ -34,6 +34,7 @@ export class PostService {
       select: [
         'id',
         'title',
+        'author',
         'createAt',
         'updateAt',
         'isPublic',
