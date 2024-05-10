@@ -2,13 +2,13 @@ import {
   Controller,
   Post,
   Delete,
-  UseInterceptors,
   UploadedFile,
   Get,
   Param,
   Body,
   HttpException,
   HttpStatus,
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
