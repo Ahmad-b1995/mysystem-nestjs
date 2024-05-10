@@ -53,14 +53,17 @@ services:
       start_period: 15s
 
   mysql-backup:
+    container_name: mysql-backup
     image: databack/mysql-backup
+    env_file: .env
     environment:
       DB_SERVER: dextrading-mysql
       DB_PORT: ${DB_PORT}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASSWORD}
-      SCHEDULE: '@daily'
       BACKUP_DIR: '/backups'
+    networks:
+      - dextrading-intranet
     volumes:
       - ./backups:/backups
     depends_on:
