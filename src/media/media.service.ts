@@ -37,8 +37,8 @@ export class MediaService {
   async remove(id: string): Promise<void> {
     const media = await this.findOne(id);
     if (media) {
-      const fullPath = join(__dirname, '../../public/uploads', media.filename);
-      await fsPromises.unlink(fullPath); // Delete the file from the file system
+      const fullPath = join(__dirname, '../../uploads', media.filename);
+      await fsPromises.unlink(fullPath);
       await this.MediaRepo.remove(media);
     }
   }
