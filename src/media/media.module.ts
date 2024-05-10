@@ -6,6 +6,7 @@ import { Media } from './media.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as crypto from 'crypto';
 import { diskStorage } from 'multer';
+import { FILE_UPLOADS_DIR } from 'src/constants/constants';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { diskStorage } from 'multer';
     MulterModule.registerAsync({
       useFactory: () => ({
         storage: diskStorage({
-          destination: '../../uploads',
+          destination: FILE_UPLOADS_DIR,
           filename: (req, file, cb) => {
             crypto.pseudoRandomBytes(16, (err, raw) => {
               const date = new Date();
