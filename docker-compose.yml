@@ -55,10 +55,10 @@ services:
   mysql-backup:
     image: databack/mysql-backup
     environment:
-      MYSQL_HOST: dextrading-mysql
-      MYSQL_USER: root
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DB: ${DB_NAME}
+      DB_SERVER: dextrading-mysql
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASSWORD}
       SCHEDULE: '@daily'
       BACKUP_DIR: '/backups'
     volumes:
