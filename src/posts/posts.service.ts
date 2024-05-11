@@ -6,6 +6,7 @@ import { PostEntity } from './posts.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import _ from 'lodash';
+import { PostsQuery } from './dto/posts-query.dto';
 
 @Injectable()
 export class PostService {
@@ -58,10 +59,29 @@ export class PostService {
     });
   }
 
-  findPostsByCategory(category: string): Promise<any> {
-    return this.PostsRepo.find({
+  async findPostsByCategory(
+    category: string,
+    query: PostsQuery,
+  ): Promise<{ data: PostEntity[]; count: number }> {
+    const {
+      pageSize = 10,
+      pageNo = 1,
+      sortField = 'createdAt',
+      sortOrder = 'ASC',
+    } = query;
+    const [result, total] = await this.PostsRepo.findAndCount({
       where: { categories: Like(`%${category}%`) },
+      take: pageSize,
+      skip: (pageNo - 1) * pageSize,
+      order: {
+        [sortField]: sortOrder.toUpperCase() === 'ASC' ? 'ASC' : 'DESC',
+      },
     });
+
+    return {
+      data: result,
+      count: total,
+    };
   }
 
   public(id: number): Promise<any> {

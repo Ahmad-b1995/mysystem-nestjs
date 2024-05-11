@@ -78,13 +78,28 @@ export class PostsController {
   }
 
   @Get('categories/:category')
-  @ApiOperation({ summary: 'Search articles by category' })
-  async getPostsByCategory(@Param('category') category: string) {
-    const result = await this.postService.findPostsByCategory(category);
-    result.forEach((item) => {
+  @ApiOperation({ summary: 'Search articles by category with pagination' })
+  async getPostsByCategory(
+    @Param('category') category: string,
+    @Query() query: PostsQuery,
+  ) {
+    const {
+      pageSize = 10,
+      pageNo = 1,
+      sortField = 'createdAt',
+      sortOrder = 'descend',
+    } = query;
+    const page = {
+      pageSize: Number(pageSize),
+      pageNo: Number(pageNo),
+      sortField,
+      sortOrder,
+    };
+    const result = await this.postService.findPostsByCategory(category, page);
+    result[0].forEach((item) => {
       item.tags = JSON.parse(item.tags);
       item.categories = JSON.parse(item.categories);
     });
-    return result;
+    return { data: result[0], count: result[1], ...page };
   }
 }

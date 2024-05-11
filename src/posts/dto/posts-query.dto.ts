@@ -30,8 +30,8 @@ export class PostsQuery {
 
   @ApiProperty({
     description: 'Sorting field',
-    example: 'createAt',
-    default: 'createAt',
+    example: 'createdAt',
+    default: 'createdAt',
     required: false,
   })
   @IsOptional()
@@ -47,4 +47,13 @@ export class PostsQuery {
   @IsOptional()
   @IsString()
   sortOrder?: string;
+
+  @ApiProperty({
+    description: 'Category to filter posts',
+    example: 'Technology',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  category?: string;
 }

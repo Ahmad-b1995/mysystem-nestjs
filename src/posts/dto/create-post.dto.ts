@@ -29,5 +29,6 @@ export class CreatePostDto {
   slug: string;
 
   @ApiProperty({ description: 'Featured image', example: 'how-to-read-a-book' })
+  @IsNotEmpty({ message: 'Please add an image' })
   img: string;
 }
