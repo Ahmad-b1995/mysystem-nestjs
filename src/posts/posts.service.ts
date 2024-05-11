@@ -15,11 +15,11 @@ export class PostService {
     private readonly PostsRepo: Repository<PostEntity>,
   ) {}
 
-  async findAll(option): Promise<any> {
+  async findAll(option): Promise<[PostEntity[], number]> {
     const {
       pageSize = 10,
       pageNo = 1,
-      sortField = 'createAt',
+      sortField = 'createdAt',
       sortOrder = 'descend',
     } = option;
     const orderMap = {
@@ -36,8 +36,8 @@ export class PostService {
         'id',
         'title',
         'author',
-        'createAt',
-        'updateAt',
+        'createdAt',
+        'updatedAt',
         'isPublic',
         'del',
         'categories',
@@ -62,14 +62,14 @@ export class PostService {
   async findPostsByCategory(
     category: string,
     query: PostsQuery,
-  ): Promise<{ data: PostEntity[]; count: number }> {
+  ): Promise<[PostEntity[], number]> {
     const {
       pageSize = 10,
       pageNo = 1,
       sortField = 'createdAt',
       sortOrder = 'ASC',
     } = query;
-    const [result, total] = await this.PostsRepo.findAndCount({
+    return this.PostsRepo.findAndCount({
       where: { categories: Like(`%${category}%`) },
       take: pageSize,
       skip: (pageNo - 1) * pageSize,
@@ -78,10 +78,10 @@ export class PostService {
       },
     });
 
-    return {
-      data: result,
-      count: total,
-    };
+    // return {
+    //   data: result,
+    //   count: total,
+    // };
   }
 
   public(id: number): Promise<any> {
@@ -90,7 +90,6 @@ export class PostService {
 
   create(createPostDto: CreatePostDto): Promise<PostEntity> {
     const post = new PostEntity();
-    post.createAt = Date.now();
     post.title = createPostDto.title;
     post.content = createPostDto.content;
     post.author = createPostDto.author;
@@ -105,12 +104,12 @@ export class PostService {
   }
 
   async update(id: string, updatePostDto: UpdatePostDto): Promise<PostEntity> {
-    const updateAt = Date.now();
+    const updatedAt = Date.now();
     const post = await this.PostsRepo.findOne({ where: { id: +id } });
     const { title, content, isPublic, categories, tags, summary, slug, img } =
       updatePostDto;
 
-    const data = { updateAt };
+    const data = { updatedAt };
     if (!_.isUndefined(title)) {
       Object.assign(data, { title });
     }

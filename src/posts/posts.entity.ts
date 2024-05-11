@@ -32,11 +32,16 @@ export class PostEntity {
   @Column({ default: 'wencaizhang' })
   author: string;
 
-  @Column({ type: 'bigint', width: 25, default: null })
-  createAt: number;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 
-  @Column({ type: 'bigint', width: 25, default: null })
-  updateAt: number;
+  @Column({
+    type: 'timestamp',
+    nullable: true,
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
 
   @Column({ default: false })
   isPublic: boolean;
