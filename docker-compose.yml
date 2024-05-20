@@ -88,6 +88,8 @@ services:
 volumes:
   mysql:
     name: dextrading-mysql
+  redis:
+    name: dextrading-redis
 
 networks:
   dextrading-intranet:
