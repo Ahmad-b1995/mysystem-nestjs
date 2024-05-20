@@ -10,18 +10,22 @@ import jwtConfig from './common/config/jwt.config';
 import databaseConfig from './common/config/database.config';
 import swaggerConfig from './common/config/swagger.config';
 import { validate } from './common/validation/env.validation';
+import redisConfig from './common/config/redis.config';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { MediaModule } from './media/media.module';
 import { TagsModule } from './tags/tags.module';
 import { CategoryModule } from './category/category.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, jwtConfig, databaseConfig, swaggerConfig],
+      load: [appConfig, jwtConfig, redisConfig, databaseConfig, swaggerConfig],
       validate,
     }),
     DatabaseModule,
@@ -29,6 +33,7 @@ import { CategoryModule } from './category/category.module';
     UsersModule,
     AuthModule,
     MediaModule,
+    RedisModule,
     TagsModule,
     CategoryModule,
     ServeStaticModule.forRoot({
@@ -36,6 +41,12 @@ import { CategoryModule } from './category/category.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}
