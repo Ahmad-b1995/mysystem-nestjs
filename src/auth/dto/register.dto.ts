@@ -1,63 +1,50 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
-  IsNotEmpty,
   IsOptional,
-  MinLength,
   IsString,
+  Length,
   Matches,
 } from 'class-validator';
 
+
 export class RegisterDto {
-  @ApiProperty({
-    description: 'Username for the account',
-    example: 'wencai',
-    required: true,
-  })
-  @IsNotEmpty({ message: 'Username is required' })
-  @IsString({ message: 'Username must be a string' })
+  @ApiProperty({ description: 'The username of the user', example: 'john_doe' })
+  @IsOptional()
+  @IsString()
+  @Length(3, 20)
   username: string;
 
+  @ApiProperty({ description: 'The nickname of the user', example: 'Johnny' })
+  @IsOptional()
+  @IsString()
+  @Length(2, 30)
+  nickName: string;
+
   @ApiProperty({
-    description:
-      'Password for the account, which must include at least one number and one uppercase letter.',
-    example: 'Pass1234',
-    required: true,
+    description: 'The password of the user',
+    example: 'strongpassword123',
   })
-  @IsNotEmpty({ message: 'Password is required' })
-  @MinLength(8, { message: 'Password must be at least 8 characters long' })
-  @Matches(/((?=.*\d)(?=.*[A-Z]).{8,30})/, {
-    message:
-      'Password must include at least one uppercase letter and one number.',
-  })
+  @IsOptional()
+  @IsString()
+  @Length(8, 100)
   password: string;
 
   @ApiProperty({
-    description: 'Optional nickname for the user',
-    example: 'zhang',
-    required: false,
+    description: 'The email of the user',
+    example: 'john.doe@example.com',
   })
   @IsOptional()
-  @IsString({ message: 'Nickname must be a string' })
-  nickName?: string;
-
-  @ApiProperty({
-    description: 'Email address of the user',
-    example: 'user@example.com',
-    required: true,
-  })
-  @IsEmail({}, { message: 'Invalid email address' })
-  @IsNotEmpty({ message: 'Email is required' })
+  @IsEmail()
   email: string;
 
   @ApiProperty({
-    description: 'Optional personal description of the user',
-    example: 'Developer with 5 years of experience in web technologies.',
-    required: false,
+    description: 'The description of the user',
+    example: 'A brief description about John',
   })
   @IsOptional()
-  @IsString({ message: 'Description must be a string' })
-  desc?: string;
+  @IsString()
+  desc: string;
 
   @ApiProperty({
     description: 'URL of the user’s avatar image',
