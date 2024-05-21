@@ -1,6 +1,6 @@
 services:
-  dextrading-api:
-    container_name: dextrading-api
+  my-system-api:
+    container_name: my-system-api
     restart: unless-stopped
     build:
       context: .
@@ -9,27 +9,27 @@ services:
     ports:
       - '${APP_PORT}:${APP_PORT}'
     networks:
-      - dextrading-intranet
+      - my-system-intranet
     env_file:
       - .env
     environment:
-      - DB_HOST=dextrading-mysql
+      - DB_HOST=my-system-mysql
     depends_on:
-      dextrading-mysql:
+      my-system-mysql:
         condition: service_healthy
-      dextrading-redis:
+      my-system-redis:
         condition: service_healthy
     volumes:
       - ./uploads:/uploads
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:${APP_PORT}']
+      test: [ 'CMD', 'curl', '-f', 'http://localhost:${APP_PORT}' ]
       interval: 30s
       timeout: 10s
       retries: 3
     command: node dist/main.js
 
-  dextrading-mysql:
-    container_name: dextrading-mysql
+  my-system-mysql:
+    container_name: my-system-mysql
     restart: always
     image: mysql:8.0.29
     env_file: .env
@@ -39,21 +39,28 @@ services:
     ports:
       - '3307:${DB_PORT}'
     networks:
-      - dextrading-intranet
+      - my-system-intranet
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
       TZ: 'utc'
     command: --default-authentication-plugin=mysql_native_password
     healthcheck:
-      test: ['CMD', 'mysqladmin', '-u${DB_USER}', '-p${DB_PASSWORD}', 'ping']
+      test:
+        [
+          'CMD',
+          'mysqladmin',
+          '-u${DB_USER}',
+          '-p${DB_PASSWORD}',
+          'ping'
+        ]
       interval: 10s
       retries: 5
       timeout: 10s
       start_period: 15s
 
-  dextrading-redis:
-    container_name: dextrading-redis
+  my-system-redis:
+    container_name: my-system-redis
     image: redis:alpine
     restart: unless-stopped
     volumes:
@@ -61,9 +68,9 @@ services:
     ports:
       - 6380:${REDIS_PORT}
     networks:
-      - dextrading-intranet
+      - my-system-intranet
     healthcheck:
-      test: ['CMD', 'redis-cli', 'ping']
+      test: [ 'CMD', 'redis-cli', 'ping' ]
       interval: 5s
       retries: 3
       timeout: 3s
@@ -73,25 +80,25 @@ services:
     image: databack/mysql-backup
     env_file: .env
     environment:
-      DB_SERVER: dextrading-mysql
+      DB_SERVER: my-system-mysql
       DB_PORT: ${DB_PORT}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASSWORD}
       BACKUP_DIR: '/backups'
     networks:
-      - dextrading-intranet
+      - my-system-intranet
     volumes:
       - ./backups:/backups
     depends_on:
-      - dextrading-mysql
+      - my-system-mysql
 
 volumes:
   mysql:
-    name: dextrading-mysql
+    name: my-system-mysql
   redis:
-    name: dextrading-redis
+    name: my-system-redis
 
 networks:
-  dextrading-intranet:
-    name: dextrading-intranet
+  my-system-intranet:
+    name: my-system-intranet
     driver: bridge

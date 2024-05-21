@@ -20,6 +20,8 @@ import { CategoryModule } from './category/category.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { RedisModule } from './redis/redis.module';
+import { MailModule } from './mail/mail.module';
+import { DayModule } from './day/day.module';
 
 @Module({
   imports: [
@@ -33,12 +35,14 @@ import { RedisModule } from './redis/redis.module';
     UsersModule,
     AuthModule,
     MediaModule,
+    MailModule,
     RedisModule,
     TagsModule,
     CategoryModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../', 'uploads'),
     }),
+    DayModule,
   ],
   controllers: [AppController],
   providers: [
