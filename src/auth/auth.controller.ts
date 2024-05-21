@@ -17,10 +17,10 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { UsersService } from 'src/users/users.service';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @Controller('api/auth')
 @ApiTags('Authentication')
@@ -32,10 +32,10 @@ export class AuthController {
 
   @Post('register')
   @ApiOperation({ summary: 'Register User' })
-  @ApiBody({ type: RegisterDto })
+  @ApiBody({ type: CreateUserDto })
   @ApiResponse({ status: 201, description: 'User registered successfully.' })
   @ApiResponse({ status: 400, description: 'Bad request.' })
-  async register(@Body() dto: RegisterDto) {
+  async register(@Body() dto: CreateUserDto) {
     try {
       const user = await this.usersService.create(dto);
       return { message: 'User registered successfully', user };
