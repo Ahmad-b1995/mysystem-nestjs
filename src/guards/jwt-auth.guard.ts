@@ -10,10 +10,10 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
-import jwtConfig from '../../common/config/jwt.config';
-import { REQUEST_USER_KEY } from '../../common/constants';
-import { ActiveUserData } from '../../common/interfaces/active-user-data.interface';
-import { RedisService } from '../../redis/redis.service';
+import jwtConfig from '../common/config/jwt.config';
+import { REQUEST_USER_KEY } from '../common/constants';
+import { ActiveUserData } from '../common/interfaces/active-user-data.interface';
+import { RedisService } from '../redis/redis.service';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {

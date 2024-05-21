@@ -17,11 +17,9 @@ import { AuthModule } from './auth/auth.module';
 import { MediaModule } from './media/media.module';
 import { TagsModule } from './tags/tags.module';
 import { CategoryModule } from './category/category.module';
-import { APP_GUARD } from '@nestjs/core';
 import { RedisModule } from './redis/redis.module';
 import { MailModule } from './mail/mail.module';
 import { DayModule } from './day/day.module';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -45,12 +43,6 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     DayModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-  ],
+  providers: [AppService],
 })
 export class AppModule {}
