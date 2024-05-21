@@ -6,8 +6,8 @@ import { Task } from './entities/task.entity';
 import { Goal } from 'src/goals/entities/goal.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Task]), TypeOrmModule.forFeature([Goal])],
+  imports: [TypeOrmModule.forFeature([Task, Goal])],
   controllers: [TasksController],
   providers: [TasksService],
 })
-export class OrderModule {}
+export class TasksModule {}

@@ -6,15 +6,15 @@ import { Abstract } from 'src/database/abstract.entity';
 @Entity('goals')
 export class Goal extends Abstract {
   @ApiProperty({ description: 'The title of the goal' })
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   title: string;
 
   @ApiProperty({ description: 'The description of the goal' })
-  @Column()
+  @Column({ type: 'text', nullable: true })
   description: string;
 
   @ApiProperty({ description: 'Flag indicating if the goal is never-ending' })
-  @Column()
+  @Column({ type: 'boolean' })
   neverEnding: boolean;
 
   @ApiProperty({

@@ -20,6 +20,8 @@ import { CategoryModule } from './category/category.module';
 import { RedisModule } from './redis/redis.module';
 import { MailModule } from './mail/mail.module';
 import { DayModule } from './day/day.module';
+import { GoalsModule } from './goals/goals.module';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { DayModule } from './day/day.module';
       validate,
     }),
     DatabaseModule,
+    GoalsModule,
+    TasksModule,
     PostsModule,
     UsersModule,
     AuthModule,

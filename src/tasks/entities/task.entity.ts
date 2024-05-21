@@ -9,14 +9,14 @@ export class Task extends Abstract {
     description: 'The title of the task',
     example: 'Clean the house',
   })
-  @Column({ unique: true })
+  @Column({ type: 'varchar', length: 255, unique: true })
   title: string;
 
   @ApiProperty({
     description: 'The description of the task',
     example: 'learning management skills and their implementation',
   })
-  @Column()
+  @Column({ type: 'text', nullable: true })
   description: string;
 
   @ApiProperty({
@@ -27,18 +27,18 @@ export class Task extends Abstract {
   steps: string[];
 
   @ApiProperty({ description: 'How often the task should be done', example: 1 })
-  @Column()
+  @Column({ type: 'int', default: 1 })
   frequency: number;
 
   @ApiProperty({ description: 'The current streak of the task', example: 0 })
-  @Column()
+  @Column({ type: 'int', default: 0 })
   streak: number;
 
   @ApiProperty({
     description: 'The time of day the task is scheduled for',
     example: 'morning',
   })
-  @Column()
+  @Column({ type: 'varchar', length: 50 })
   timeOfDay: string;
 
   @ApiProperty({ description: 'The goals associated with the task' })
