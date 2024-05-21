@@ -75,7 +75,7 @@ services:
       retries: 3
       timeout: 3s
 
-  mysql-backup:
+  mysystem-mysql-backup:
     container_name: mysql-backup
     image: databack/mysql-backup
     env_file: .env
