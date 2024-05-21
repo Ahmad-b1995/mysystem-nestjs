@@ -1,6 +1,6 @@
 services:
-  my-system-api:
-    container_name: my-system-api
+  mysystem_nestjs:
+    container_name: mysystem_nestjs
     restart: unless-stopped
     build:
       context: .
@@ -9,15 +9,15 @@ services:
     ports:
       - '${APP_PORT}:${APP_PORT}'
     networks:
-      - my-system-intranet
+      - mysystem_intranet
     env_file:
       - .env
     environment:
-      - DB_HOST=my-system-mysql
+      - DB_HOST=mysystem_mysql
     depends_on:
-      my-system-mysql:
+      mysystem_mysql:
         condition: service_healthy
-      my-system-redis:
+      mysystem_redis:
         condition: service_healthy
     volumes:
       - ./uploads:/uploads
@@ -28,8 +28,8 @@ services:
       retries: 3
     command: node dist/main.js
 
-  my-system-mysql:
-    container_name: my-system-mysql
+  mysystem_mysql:
+    container_name: mysystem_mysql
     restart: always
     image: mysql:8.0.29
     env_file: .env
@@ -39,7 +39,7 @@ services:
     ports:
       - '3308:${DB_PORT}'
     networks:
-      - my-system-intranet
+      - mysystem_intranet
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
@@ -59,8 +59,8 @@ services:
       timeout: 10s
       start_period: 15s
 
-  my-system-redis:
-    container_name: my-system-redis
+  mysystem_redis:
+    container_name: mysystem_redis
     image: redis:alpine
     restart: unless-stopped
     volumes:
@@ -68,37 +68,37 @@ services:
     ports:
       - 6381:${REDIS_PORT}
     networks:
-      - my-system-intranet
+      - mysystem_intranet
     healthcheck:
       test: [ 'CMD', 'redis-cli', 'ping' ]
       interval: 5s
       retries: 3
       timeout: 3s
 
-  mysystem-mysql-backup:
-    container_name: mysystem-mysql-backup
+  mysystem_mysql_backup:
+    container_name: mysystem_mysql_backup
     image: databack/mysql-backup
     env_file: .env
     environment:
-      DB_SERVER: my-system-mysql
+      DB_SERVER: mysystem_mysql
       DB_PORT: ${DB_PORT}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASSWORD}
       BACKUP_DIR: '/backups'
     networks:
-      - my-system-intranet
+      - mysystem_intranet
     volumes:
       - ./backups:/backups
     depends_on:
-      - my-system-mysql
+      - mysystem_mysql
 
 volumes:
   mysql:
-    name: my-system-mysql
+    name: mysystem_mysql
   redis:
-    name: my-system-redis
+    name: mysystem_redis
 
 networks:
-  my-system-intranet:
-    name: my-system-intranet
+  mysystem_intranet:
+    name: mysystem_intranet
     driver: bridge
