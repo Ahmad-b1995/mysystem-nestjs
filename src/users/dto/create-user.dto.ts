@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsString, Length, Matches } from 'class-validator';
+import {
+  IsEmail,
+  IsOptional,
+  IsString,
+  Length,
+  Matches,
+} from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({ description: 'The username of the user', example: 'john_doe' })
@@ -14,20 +20,37 @@ export class CreateUserDto {
   @Length(2, 30)
   nickName: string;
 
-  @ApiProperty({ description: 'The password of the user', example: 'strongpassword123' })
+  @ApiProperty({
+    description: 'The password of the user',
+    example: 'strongpassword123',
+  })
   @IsOptional()
   @IsString()
   @Length(8, 100)
   password: string;
 
-  @ApiProperty({ description: 'The email of the user', example: 'john.doe@example.com' })
+  @ApiProperty({
+    description: 'The email of the user',
+    example: 'john.doe@example.com',
+  })
   @IsOptional()
   @IsEmail()
   email: string;
 
-  @ApiProperty({ description: 'The description of the user', example: 'A brief description about John' })
+  @ApiProperty({
+    description: 'The description of the user',
+    example: 'A brief description about John',
+  })
   @IsOptional()
   @IsString()
   desc: string;
 
-  @
+  @ApiProperty({
+    description: 'URL of the user’s avatar image',
+    example: 'https://example.com/avatar.jpg',
+    required: false,
+  })
+  @IsOptional()
+  @IsString({ message: 'Avatar must be a valid URL' })
+  avatar?: string;
+}

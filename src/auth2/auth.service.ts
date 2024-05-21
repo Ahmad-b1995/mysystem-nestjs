@@ -63,7 +63,7 @@ export class AuthService {
       const user = new User();
       user.fullName = fullName;
       user.email = isEmail(emailOrPhonenumber) ? emailOrPhonenumber : null;
-      user.phonenumber = isEmail(emailOrPhonenumber)
+      user.phoneNumber = isEmail(emailOrPhonenumber)
         ? null
         : emailOrPhonenumber;
       user.password = await this.bcryptService.hash(password);
@@ -88,7 +88,7 @@ export class AuthService {
           email: emailOrPhonenumber,
         },
         {
-          phonenumber: emailOrPhonenumber,
+          phoneNumber: emailOrPhonenumber,
         },
       ],
     });
