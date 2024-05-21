@@ -7,8 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { BcryptService } from './bcrypt.service';
-import { User } from '../users/entities/user.entity';
 import jwtConfig from '../common/config/jwt.config';
+import { User } from 'src/users/user.entity';
 
 @Module({
   imports: [

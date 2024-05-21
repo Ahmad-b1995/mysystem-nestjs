@@ -1,4 +1,3 @@
-import { User } from 'src/users/entities/user.entity';
 import { SmsService } from './../sms/sms/sms.service';
 import { isEmail } from 'validator';
 import { MailService } from './../mail/mail.service';
@@ -21,6 +20,7 @@ import { RedisService } from '../redis/redis.service';
 import { BcryptService } from './bcrypt.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { SignUpDto } from './dto/sign-up.dto';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class AuthService {
