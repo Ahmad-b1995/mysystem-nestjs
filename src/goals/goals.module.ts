@@ -6,7 +6,7 @@ import { Goal } from './entities/goal.entity';
 import { Task } from 'src/tasks/entities/task.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Goal, Task])],
+  imports: [TypeOrmModule.forFeature([Task]), TypeOrmModule.forFeature([Goal])],
   controllers: [GoalsController],
   providers: [GoalsService],
 })
