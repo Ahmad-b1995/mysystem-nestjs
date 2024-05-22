@@ -63,27 +63,27 @@ export class CreateTaskDto {
   @IsIn(['morning', 'afternoon', 'evening', 'night'])
   timeOfDay: string;
 
-  @ApiProperty({
-    description: 'The current streak of the task',
-    example: 0,
-  })
-  @IsInt()
-  @IsNotEmpty()
-  streak: number;
+  // @ApiProperty({
+  //   description: 'The current streak of the task',
+  //   example: 0,
+  // })
+  // @IsInt()
+  // @IsNotEmpty()
+  // streak: number;
 
-  @ApiProperty({
-    description: 'Is the task open',
-    example: false,
-  })
-  @IsBoolean()
-  @IsNotEmpty()
-  isOpen: boolean;
+  // @ApiProperty({
+  //   description: 'Is the task open',
+  //   example: false,
+  // })
+  // @IsBoolean()
+  // @IsNotEmpty()
+  // isOpen: boolean;
 
-  @ApiProperty({
-    description: 'Is the task checked',
-    example: false,
-  })
-  @IsBoolean()
-  @IsNotEmpty()
-  isChecked: boolean;
+  // @ApiProperty({
+  //   description: 'Is the task checked',
+  //   example: false,
+  // })
+  // @IsBoolean()
+  // @IsNotEmpty()
+  // isChecked: boolean;
 }
