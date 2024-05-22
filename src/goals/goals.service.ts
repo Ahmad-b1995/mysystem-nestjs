@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateGoalDto } from './dto/create-goal.dto';
 import { UpdateGoalDto } from './dto/update-goal.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,8 +17,7 @@ export class GoalsService {
   ) {}
 
   async create(createGoalDto: CreateGoalDto) {
-    const goal = new Goal();
-    goal.title = createGoalDto.title;
+    const goal = this.goalRepository.create(createGoalDto);
     return await this.goalRepository.save(goal);
   }
 
@@ -25,17 +28,26 @@ export class GoalsService {
   async findOne(id: number) {
     const goal = await this.goalRepository.findOneBy({ id });
     if (!goal) {
-      throw new BadRequestException('Goal not found');
+      throw new NotFoundException(`Goal with ID ${id} not found`);
     }
+    return goal;
   }
 
   async update(id: number, updateGoalDto: UpdateGoalDto) {
-    const goal = new Goal();
-    goal.title = updateGoalDto.title;
-    return await this.goalRepository.update(id, goal);
+    const goal = await this.goalRepository.preload({
+      id,
+      ...updateGoalDto,
+    });
+    if (!goal) {
+      throw new NotFoundException(`Goal with ID ${id} not found`);
+    }
+    return await this.goalRepository.save(goal);
   }
 
   async remove(id: number) {
-    return await this.goalRepository.delete(id);
+    const result = await this.goalRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Goal with ID ${id} not found`);
+    }
   }
 }

@@ -14,7 +14,7 @@ export class Goal extends Abstract {
   description: string;
 
   @ApiProperty({ description: 'Flag indicating if the goal is never-ending' })
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: false })
   neverEnding: boolean;
 
   @ApiProperty({

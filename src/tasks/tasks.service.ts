@@ -1,5 +1,9 @@
 import { DeleteResult, Repository } from 'typeorm';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './entities/task.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -13,8 +17,7 @@ export class TasksService {
   ) {}
 
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
-    const task = new Task();
-    task.title = createTaskDto.title;
+    const task = this.taskRepository.create(createTaskDto);
     return await this.taskRepository.save(task);
   }
 
@@ -25,19 +28,27 @@ export class TasksService {
   async findOne(id: number): Promise<Task> {
     const task = await this.taskRepository.findOneBy({ id });
     if (!task) {
-      throw new BadRequestException('Task not found');
+      throw new NotFoundException('Task not found');
     }
     return task;
   }
 
   async update(id: number, updateTaskDto: UpdateTaskDto): Promise<Task> {
-    return await this.taskRepository.save({
-      id: id,
+    const task = await this.taskRepository.preload({
+      id,
       ...updateTaskDto,
     });
+    if (!task) {
+      throw new NotFoundException('Task not found');
+    }
+    return await this.taskRepository.save(task);
   }
 
   async remove(id: number): Promise<DeleteResult> {
-    return await this.taskRepository.delete(id);
+    const result = await this.taskRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException('Task not found');
+    }
+    return result;
   }
 }

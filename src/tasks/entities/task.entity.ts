@@ -14,7 +14,7 @@ export class Task extends Abstract {
 
   @ApiProperty({
     description: 'The description of the task',
-    example: 'learning management skills and their implementation',
+    example: 'Tasks to ensure the house is clean and tidy',
   })
   @Column({ type: 'text', nullable: true })
   description: string;
@@ -26,7 +26,10 @@ export class Task extends Abstract {
   @Column('simple-array')
   steps: string[];
 
-  @ApiProperty({ description: 'How often the task should be done', example: 1 })
+  @ApiProperty({
+    description: 'How often the task should be done, in days',
+    example: 1,
+  })
   @Column({ type: 'int', default: 1 })
   frequency: number;
 

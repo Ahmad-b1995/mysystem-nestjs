@@ -44,10 +44,7 @@ export class CreateTaskDto {
   @IsNotEmpty()
   frequency: number;
 
-  @ApiProperty({
-    description: 'The IDs of associated goals',
-    example: [1, 2],
-  })
+  @ApiProperty({ description: 'The IDs of associated goals', example: [1, 2] })
   @IsArray()
   @ArrayNotEmpty()
   @IsInt({ each: true })
