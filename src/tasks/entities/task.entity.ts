@@ -1,50 +1,55 @@
+import { Entity, Column, ManyToMany, OneToMany, JoinTable } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
-import { Goal } from '../../goals/entities/goal.entity';
-import { Abstract } from 'src/database/abstract.entity';
+import { Step } from './step.entity';
+import { Goal } from 'src/goals/entities/goal.entity';
 
 @Entity('tasks')
-export class Task extends Abstract {
-  @ApiProperty({
-    description: 'The title of the task',
-    example: 'Clean the house',
-  })
-  @Column({ type: 'varchar', length: 255, unique: true })
+export class Task {
+  @ApiProperty({ description: 'The ID of the task' })
+  @Column({ primary: true, type: 'int' })
+  id: number;
+
+  @ApiProperty({ description: 'The title of the task' })
+  @Column({ type: 'varchar', length: 255 })
   title: string;
 
-  @ApiProperty({
-    description: 'The description of the task',
-    example: 'Tasks to ensure the house is clean and tidy',
-  })
+  @ApiProperty({ description: 'The description of the task', nullable: true })
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @ApiProperty({
-    description: 'The steps to complete the task',
-    example: ['Do the dishes', 'Vacuum the house', 'Mop the house'],
-  })
-  @Column('simple-array')
-  steps: string[];
-
-  @ApiProperty({
-    description: 'How often the task should be done, in days',
-    example: 1,
-  })
-  @Column({ type: 'int', default: 1 })
+  @ApiProperty({ description: 'The frequency of the task' })
+  @Column({ type: 'int' })
   frequency: number;
 
-  @ApiProperty({ description: 'The current streak of the task', example: 0 })
-  @Column({ type: 'int', default: 0 })
+  @ApiProperty({ description: 'The streak of the task' })
+  @Column({ type: 'int' })
   streak: number;
 
-  @ApiProperty({
-    description: 'The time of day the task is scheduled for',
-    example: 'morning',
-  })
+  @ApiProperty({ description: 'The time of day the task is scheduled for' })
   @Column({ type: 'varchar', length: 50 })
   timeOfDay: string;
 
-  @ApiProperty({ description: 'The goals associated with the task' })
+  @ApiProperty({ description: 'The creation date of the task' })
+  @Column({ type: 'timestamp' })
+  created_at: Date;
+
+  @ApiProperty({ description: 'The last update date of the task' })
+  @Column({ type: 'timestamp' })
+  updated_at: Date;
+
+  @ApiProperty({ description: 'Is the task open' })
+  @Column({ type: 'boolean' })
+  isOpen: boolean;
+
+  @ApiProperty({ description: 'Is the task checked' })
+  @Column({ type: 'boolean' })
+  isChecked: boolean;
+
+  @ApiProperty({ type: () => Step, isArray: true })
+  @OneToMany(() => Step, (step) => step.task)
+  steps: Step[];
+
+  @ApiProperty({ type: () => Goal, isArray: true })
   @ManyToMany(() => Goal, (goal) => goal.tasks)
   @JoinTable()
   goals: Goal[];
