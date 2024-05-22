@@ -1,4 +1,4 @@
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, In, Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './entities/task.entity';
@@ -31,7 +31,11 @@ export class TasksService {
     task.updated_at = new Date();
 
     if (createTaskDto.goalId && createTaskDto.goalId.length) {
-      task.goals = await this.goalRepository.findByIds(createTaskDto.goalId);
+      task.goals = await this.goalRepository.find({
+        where: {
+          id: In(createTaskDto.goalId),
+        },
+      });
     }
 
     if (createTaskDto.steps && createTaskDto.steps.length) {
