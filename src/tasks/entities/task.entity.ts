@@ -1,14 +1,11 @@
 import { Entity, Column, ManyToMany, OneToMany, JoinTable } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Step } from './step.entity';
+import { Abstract } from 'src/database/abstract.entity';
 import { Goal } from 'src/goals/entities/goal.entity';
 
 @Entity('tasks')
-export class Task {
-  @ApiProperty({ description: 'The ID of the task' })
-  @Column({ primary: true, type: 'int' })
-  id: number;
-
+export class Task extends Abstract {
   @ApiProperty({ description: 'The title of the task' })
   @Column({ type: 'varchar', length: 255 })
   title: string;
