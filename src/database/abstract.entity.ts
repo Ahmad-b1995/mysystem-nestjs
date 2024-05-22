@@ -19,9 +19,9 @@ export class Abstract {
 
   @ApiProperty({ description: 'Date of creation' })
   @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
+  createdAt: Date;
 
   @ApiProperty({ description: 'Date of update' })
   @UpdateDateColumn({ name: 'updated_at' })
-  updated_at: Date;
+  updatedAt: Date;
 }

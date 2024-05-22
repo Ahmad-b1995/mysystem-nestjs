@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
-import { PostEntity } from './posts.entity';
+import { Post } from './posts.entity';
 
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -11,11 +11,11 @@ import { PostsQuery } from './dto/posts-query.dto';
 @Injectable()
 export class PostService {
   constructor(
-    @InjectRepository(PostEntity)
-    private readonly PostsRepo: Repository<PostEntity>,
+    @InjectRepository(Post)
+    private readonly PostsRepo: Repository<Post>,
   ) {}
 
-  async findAll(option): Promise<[PostEntity[], number]> {
+  async findAll(option): Promise<[Post[], number]> {
     const {
       pageSize = 10,
       pageNo = 1,
@@ -49,7 +49,7 @@ export class PostService {
     });
   }
 
-  findOne(id: string): Promise<PostEntity> {
+  findOne(id: string): Promise<Post> {
     return this.PostsRepo.findOne({ where: { id: +id } });
   }
 
@@ -62,7 +62,7 @@ export class PostService {
   async findPostsByCategory(
     category: string,
     query: PostsQuery,
-  ): Promise<[PostEntity[], number]> {
+  ): Promise<[Post[], number]> {
     const {
       pageSize = 10,
       pageNo = 1,
@@ -88,8 +88,8 @@ export class PostService {
     return this.PostsRepo.update(id, { isPublic: true });
   }
 
-  create(createPostDto: CreatePostDto): Promise<PostEntity> {
-    const post = new PostEntity();
+  create(createPostDto: CreatePostDto): Promise<Post> {
+    const post = new Post();
     post.title = createPostDto.title;
     post.content = createPostDto.content;
     post.author = createPostDto.author;
@@ -103,7 +103,7 @@ export class PostService {
     return this.PostsRepo.save(post);
   }
 
-  async update(id: string, updatePostDto: UpdatePostDto): Promise<PostEntity> {
+  async update(id: string, updatePostDto: UpdatePostDto): Promise<Post> {
     const updatedAt = Date.now();
     const post = await this.PostsRepo.findOne({ where: { id: +id } });
     const { title, content, isPublic, categories, tags, summary, slug, img } =

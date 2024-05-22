@@ -1,10 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Abstract } from 'src/database/abstract.entity';
+import { Column, Entity } from 'typeorm';
 
-@Entity()
-export class PostEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+@Entity('posts')
+export class Post extends Abstract {
   @Column()
   title: string;
 
@@ -31,17 +29,6 @@ export class PostEntity {
 
   @Column({ default: 'wencaizhang' })
   author: string;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
-
-  @Column({
-    type: 'timestamp',
-    nullable: true,
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
 
   @Column({ default: false })
   isPublic: boolean;
