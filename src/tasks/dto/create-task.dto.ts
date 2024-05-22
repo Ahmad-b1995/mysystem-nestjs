@@ -8,6 +8,7 @@ import {
   ArrayMinSize,
   IsIn,
   IsBoolean,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateTaskDto {
@@ -31,6 +32,7 @@ export class CreateTaskDto {
     description: 'The steps to complete the task',
     example: ['Do the dishes', 'Vacuum the house', 'Mop the house'],
   })
+  @IsOptional()
   @IsArray()
   @ArrayNotEmpty()
   @ArrayMinSize(1)
