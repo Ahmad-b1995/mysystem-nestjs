@@ -19,27 +19,19 @@ export class Task extends Abstract {
   frequency: number;
 
   @ApiProperty({ description: 'The streak of the task' })
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 0 })
   streak: number;
 
   @ApiProperty({ description: 'The time of day the task is scheduled for' })
   @Column({ type: 'varchar', length: 50 })
   timeOfDay: string;
 
-  @ApiProperty({ description: 'The creation date of the task' })
-  @Column({ type: 'timestamp' })
-  created_at: Date;
-
-  @ApiProperty({ description: 'The last update date of the task' })
-  @Column({ type: 'timestamp' })
-  updated_at: Date;
-
-  @ApiProperty({ description: 'Is the task open' })
-  @Column({ type: 'boolean' })
-  isOpen: boolean;
+  // @ApiProperty({ description: 'Is the task open' })
+  // @Column({ type: 'boolean', default: false })
+  // isOpen: boolean;
 
   @ApiProperty({ description: 'Is the task checked' })
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: false })
   isChecked: boolean;
 
   @ApiProperty({ type: () => Step, isArray: true })

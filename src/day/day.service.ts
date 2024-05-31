@@ -15,7 +15,7 @@ export class DayService {
     const today = new Date();
     const dailyRoutine = tasks.filter((task) => {
       const daysSinceCreated = Math.floor(
-        (today.getTime() - task.created_at.getTime()) / (1000 * 60 * 60 * 24),
+        (today.getTime() - task.createdAt.getTime()) / (1000 * 60 * 60 * 24),
       );
       return daysSinceCreated % task.frequency === 0;
     });

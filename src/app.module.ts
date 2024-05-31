@@ -23,9 +23,12 @@ import { DayModule } from './day/day.module';
 import { GoalsModule } from './goals/goals.module';
 import { TasksModule } from './tasks/tasks.module';
 
+const ENV = process.env.NODE_ENV;
+
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: !ENV ? '.env' : `.env.${ENV}`,
       isGlobal: true,
       load: [appConfig, jwtConfig, redisConfig, databaseConfig, swaggerConfig],
       validate,

@@ -23,12 +23,7 @@ export class TasksService {
     task.title = createTaskDto.title;
     task.description = createTaskDto.description;
     task.frequency = createTaskDto.frequency;
-    task.streak = createTaskDto.streak;
     task.timeOfDay = createTaskDto.timeOfDay;
-    task.isOpen = createTaskDto.isOpen;
-    task.isChecked = createTaskDto.isChecked;
-    task.created_at = new Date();
-    task.updated_at = new Date();
 
     if (createTaskDto.goalId && createTaskDto.goalId.length) {
       task.goals = await this.goalRepository.find({

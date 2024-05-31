@@ -1,7 +1,8 @@
+import { Abstract } from 'src/database/abstract.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Category {
+export class Category extends Abstract {
   @PrimaryGeneratedColumn()
   id: number;
 
