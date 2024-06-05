@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Task } from 'src/tasks/entities/task.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 
 @Injectable()
 export class DayService {
@@ -20,5 +21,24 @@ export class DayService {
       return daysSinceCreated % task.frequency === 0;
     });
     return dailyRoutine;
+  }
+
+  async updateTaskStatus(id: string, updateTaskStatusDto: UpdateTaskStatusDto): Promise<Task> {
+    const task = await this.taskRepository.findOne(id);
+    if (!task) {
+      throw new NotFoundException(`Task with ID ${id} not found`);
+    }
+
+    if (updateTaskStatusDto.isChecked !== undefined) {
+      task.isChecked = updateTaskStatusDto.isChecked;
+
+      if (task.isChecked) {
+        task.streak += 1;
+      } else {
+        task.streak = 0; // Reset streak if unchecked
+      }
+    }
+
+    return this.taskRepository.save(task);
   }
 }
